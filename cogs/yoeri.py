@@ -17,10 +17,10 @@ class YoeriCog(Cog):
     @Cog.listener("on_message")
     async def yoeri(self, message):
 
-        if message.author == self.bot.user or not message.guild:
+        if message.author == self.bot.user or message.guild.id != self.allowed_guild_id:
             return
 
-        if "yoeri" in message.content.lower():
+        if random.random() < 0.01:
             quotes = self.load_quotes()
             random_quote = random.choice(quotes)
             webhook = ImpersonateWebhook(self.bot, message.channel.id, "yoeri-hook")
