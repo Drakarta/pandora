@@ -4,13 +4,12 @@ import sys
 from discord import Intents
 from discord.ext.commands import Bot as BotBase
 
-from config import Config
+from utils.config import Config
 
-COGS = [path[:-3] for path in os.listdir("./cogs") if path[-3:] == ".py"]
 
 class Bot(BotBase):
     def __init__(self):
-        config_file = "config.toml"
+        config_file = "./config/config.toml"
         if len(sys.argv) > 1:
             config_file = sys.argv[1]
 
@@ -25,6 +24,7 @@ class Bot(BotBase):
         )
 
     async def setup_hook(self):
+        COGS = [path[:-3] for path in os.listdir("./cogs") if path[-3:] == ".py"]
         for cog in COGS:
             await self.load_extension(f"cogs.{cog}")
             print(f"loaded: {cog}")
@@ -32,7 +32,7 @@ class Bot(BotBase):
 
     def run(self, **kwargs):
         print("running bot...")
-        super().run(self.config.token, reconnect=True)
+        super().run(self.config.api_tokens["discord"], reconnect=True)
 
 def main():
     Bot().run()
