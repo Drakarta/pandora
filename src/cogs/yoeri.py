@@ -9,8 +9,7 @@ class Yoeri(Cog):
         self.bot = bot
 
         self.data = self.load_json("./config/yoeri.json")
-        # self.allowed_guild_id = self.data["guild_id"]
-        self.allowed_guild_id = 734455624036909126
+        self.allowed_guild_id = self.data["guild_id"]
         self.yoeri_id = self.data["user_id"]
         self.quotes = self.data["quotes"]
 
