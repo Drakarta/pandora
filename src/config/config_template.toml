@@ -1,0 +1,5 @@
+prefix = "!"
+description = "description"
+owner_id = 123
+[api_tokens]
+discord = "token"
