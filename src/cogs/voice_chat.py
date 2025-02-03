@@ -24,14 +24,20 @@ class Voice_Chat(Cog):
         if before.channel == after.channel:
             return
 
-        if before.channel and before.channel.id not in self.ignore_vc_ids:
+        # User left a voice channel
+        if (
+            before.channel
+            and before.channel.id not in self.ignore_vc_ids
+            and before.channel.category_id == self.category_id
+        ):
             await self.handle_channel_leave(member, before.channel)
 
+        # User joined the create voice channel
         if after.channel and after.channel.id == self.create_vc_id:
-            await self.create_private_vc(member)
+            await self.create_voice_channel(member)
 
     async def handle_channel_leave(self, member, channel):
-        if len(channel.members) == 0:
+        if len(channel.members) <= 0:
             await channel.delete()
             await member.remove_roles(discord.Object(id=self.vc_owner_role_id))
         elif self.vc_owner_role_id in [role.id for role in member.roles]:
@@ -39,13 +45,13 @@ class Voice_Chat(Cog):
             new_owner = channel.members[0]
             await new_owner.add_roles(discord.Object(id=self.vc_owner_role_id))
 
-    async def create_private_vc(self, member):
+    async def create_voice_channel(self, member):
         category = discord.utils.get(member.guild.categories, id=self.category_id)
         if not category:
             return
 
         new_vc = await member.guild.create_voice_channel(
-            name=f"{member.name}'s Channel", category=category
+            f"{member.name}'s channel", category=category
         )
         await member.move_to(new_vc)
         await member.add_roles(discord.Object(id=self.vc_owner_role_id))
