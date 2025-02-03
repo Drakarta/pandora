@@ -7,6 +7,7 @@ import pytz
 
 from utils.config import Config
 
+
 class Clock(Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -14,23 +15,31 @@ class Clock(Cog):
         config_file = "./config/clock_config.toml"
         if len(sys.argv) > 1:
             config_file = sys.argv[1]
-
         self.config = Config(config_file)
+
         self.timezone = pytz.timezone(self.config.timezone)
         self.channel_id = self.config.channel_id
+
+        if not self.channel_id:
+            print("Clock Cog: Missing 'channel_id' in config.")
+            return
+
         self.clock.start()
-    
+
     @tasks.loop(minutes=10)
     async def clock(self):
-        channel = self.bot.get_channel(self.channel_id)
-        if not channel:
-            print(f"Failed to find channel with ID {self.channel_id}")
-            return
-        current_time = datetime.datetime.now(tz=self.timezone)
-        formatted_minutes = "{:02}".format((current_time.minute // 10) * 10)
-        await channel.edit(
-            name=f"Time: {current_time.strftime('%H')}:{formatted_minutes} [{current_time.tzname()}]"
-        )
+        try:
+            channel = await self.bot.fetch_channel(self.channel_id)
+            if not channel:
+                print(f"Clock Cog: Failed to find channel with ID {self.channel_id}")
+                return
+
+            current_time = datetime.datetime.now(tz=self.timezone)
+            formatted_time = current_time.strftime("%H:%M")[:-1] + "0"
+            await channel.edit(name=f"Time: {formatted_time} [{current_time.tzname()}]")
+
+        except Exception as e:
+            print(f"Clock Cog: Error updating channel name - {e}")
 
     @clock.before_loop
     async def before_clock(self):
@@ -38,6 +47,7 @@ class Clock(Cog):
         current_time = datetime.datetime.now()
         delay_seconds = (10 - (current_time.minute % 10)) * 60 - current_time.second
         await asyncio.sleep(delay_seconds)
+
 
 async def setup(bot):
     await bot.add_cog(Clock(bot))

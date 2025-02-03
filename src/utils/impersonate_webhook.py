@@ -1,5 +1,6 @@
 import discord
 
+
 class ImpersonateWebhook:
     def __init__(self, bot, channel_id, name):
         self.bot = bot
@@ -26,11 +27,7 @@ class ImpersonateWebhook:
         payload = {
             "content": message,
             "username": user.display_name,
-            "avatar_url": (
-                user.display_avatar.url
-                if user.display_avatar
-                else None
-            ),
+            "avatar_url": (user.display_avatar.url if user.display_avatar else None),
         }
 
         await webhook.send(**payload)

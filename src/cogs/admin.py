@@ -2,6 +2,7 @@ import os
 from discord.ext.commands import Cog
 from discord.ext import commands
 
+
 class Admin(Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -26,7 +27,7 @@ class Admin(Cog):
                     await self.bot.load_extension(cog_name)
                     print(f"Reloaded {filename}")
         await ctx.send("Cogs reloaded.")
-        
+
 
 async def setup(bot):
     await bot.add_cog(Admin(bot))

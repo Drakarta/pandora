@@ -12,7 +12,6 @@ class Bot(BotBase):
         config_file = "./config/config.toml"
         if len(sys.argv) > 1:
             config_file = sys.argv[1]
-
         self.config = Config(config_file)
 
         super().__init__(
@@ -34,8 +33,10 @@ class Bot(BotBase):
         print("running bot...")
         super().run(self.config.api_tokens["discord"], reconnect=True)
 
+
 def main():
     Bot().run()
+
 
 if __name__ == "__main__":
     main()
