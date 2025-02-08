@@ -1,5 +1,6 @@
 prefix = "!"
-description = "description"
+description = "Description"
+activity = "Custom activity"
 owner_id = 123
 [api_tokens]
 discord = "token"

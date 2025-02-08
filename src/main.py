@@ -1,6 +1,7 @@
 import os
 import sys
 
+import discord
 from discord import Intents, app_commands
 from discord.ext.commands import Bot as BotBase
 
@@ -13,6 +14,8 @@ class Bot(BotBase):
         if len(sys.argv) > 1:
             config_file = sys.argv[1]
         self.config = Config(config_file)
+
+        self.activity = self.config.activity
 
         super().__init__(
             command_prefix=self.config.prefix,
@@ -32,6 +35,13 @@ class Bot(BotBase):
     def run(self, **kwargs):
         print("running bot...")
         super().run(self.config.api_tokens["discord"], reconnect=True)
+
+    async def on_ready(self):
+        print(f"Logged in as {self.user} (ID: {self.user.id})")
+        await self.change_presence(
+            status=discord.Status.idle,
+            activity=discord.CustomActivity(name=self.activity),
+        )
 
 
 def main():
