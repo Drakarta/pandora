@@ -1,7 +1,7 @@
 import os
 import sys
 
-from discord import Intents
+from discord import Intents, app_commands
 from discord.ext.commands import Bot as BotBase
 
 from utils.config import Config
