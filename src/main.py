@@ -10,12 +10,7 @@ from utils.config import Config
 
 class Bot(BotBase):
     def __init__(self):
-        config_file = "./config/config.toml"
-        if len(sys.argv) > 1:
-            config_file = sys.argv[1]
-        self.config = Config(config_file)
-
-        self.activity = self.config.activity
+        self.config = Config().get_section("main")
 
         super().__init__(
             command_prefix=self.config.prefix,
@@ -34,13 +29,13 @@ class Bot(BotBase):
 
     def run(self, **kwargs):
         print("running bot...")
-        super().run(self.config.api_tokens["discord"], reconnect=True)
+        super().run(self.config.discord_token, reconnect=True)
 
     async def on_ready(self):
         print(f"Logged in as {self.user} (ID: {self.user.id})")
         await self.change_presence(
             status=discord.Status.idle,
-            activity=discord.CustomActivity(name=self.activity),
+            activity=discord.CustomActivity(name="*yawwwwn* I'm awake now."),
         )
 
 

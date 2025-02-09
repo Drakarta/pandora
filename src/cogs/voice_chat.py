@@ -11,10 +11,7 @@ class Voice_Chat(Cog):
     def __init__(self, bot):
         self.bot = bot
 
-        config_file = "./config/voice_chat_config.toml"
-        if len(sys.argv) > 1:
-            config_file = sys.argv[1]
-        self.config = Config(config_file)
+        self.config = Config().get_section("voice_chat")
 
         self.category_id = self.config.category_id
         self.create_vc_id = self.config.create_voice_channel_id

@@ -1,6 +1,23 @@
+[main]
 prefix = "!"
 description = "Description"
 activity = "Custom activity"
 owner_id = 123
-[api_tokens]
-discord = "token"
+discord_token = "token"
+
+[voice_chat]
+category_id = 123
+create_voice_channel_id = 123
+waiting_room_voice_channel_id = 123
+voice_channel_owner_role_id = 123
+
+[role]
+role_divider_id = 1203859877504491570
+
+[clock]
+timezone = "Europe/Amsterdam"
+channel_id = 123
+
+[yoeri]
+guild_id = 123
+user_id = 123

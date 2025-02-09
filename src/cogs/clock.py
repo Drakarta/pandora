@@ -12,10 +12,7 @@ class Clock(Cog):
     def __init__(self, bot):
         self.bot = bot
 
-        config_file = "./config/clock_config.toml"
-        if len(sys.argv) > 1:
-            config_file = sys.argv[1]
-        self.config = Config(config_file)
+        self.config = Config().get_section("clock")
 
         self.timezone = pytz.timezone(self.config.timezone)
         self.channel_id = self.config.channel_id

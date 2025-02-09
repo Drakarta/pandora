@@ -11,13 +11,10 @@ from utils.config import Config
 class Role(Cog):
     def __init__(self, bot):
         self.bot = bot
-
-        config_file = "./config/roles_config.toml"
-        if len(sys.argv) > 1:
-            config_file = sys.argv[1]
-        self.config = Config(config_file)
+        self.config = Config().get_section("role")
 
         self.role_divider_id = self.config.role_divider_id
+
         self.color_regex = re.compile(
             r"^(?:0x#?[0-9A-Fa-f]{6}|\#[0-9A-Fa-f]{6}|0x[0-9A-Fa-f]{6}|rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\))$"
         )

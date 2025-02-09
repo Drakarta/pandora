@@ -1,4 +1,5 @@
 __pycache__/
+config_test.toml
 config.toml
 venv/
 .vscode/
