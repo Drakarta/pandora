@@ -42,7 +42,7 @@ class Activity(Cog):
         message = ctx.message.content.replace("!addactivity ", "")
         self.db.execute("INSERT INTO activity_quotes (quote) VALUES (?)", (message,))
         self.quotes = self.db.execute("SELECT quote FROM activity_quotes")
-        await ctx.response.send_message(f"""Activity "{message}" added.""")
+        await ctx.send(f"""Activity "{message}" added.""")
 
     @commands.command()
     @commands.is_owner()
