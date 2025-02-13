@@ -10,7 +10,6 @@ from utils.DB import Database
 class Admin(Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.guild = discord.Object(id=734455624036909126)
 
         self.db = Database()
         self.db.execute(
@@ -25,7 +24,8 @@ class Admin(Cog):
     @commands.command()
     @commands.is_owner()
     async def sync(self, ctx):
-        await self.bot.tree.sync(guild=self.guild)
+        await self.bot.tree.sync(guild=discord.Object(id=734455624036909126))
+        await self.bot.tree.sync(guild=discord.Object(id=744191097554862171))
         await ctx.send("Command tree synced.")
         print("Command tree synced.")
 
