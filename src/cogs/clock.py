@@ -1,4 +1,3 @@
-import sys
 import asyncio
 from discord.ext import tasks
 from discord.ext.commands import Cog

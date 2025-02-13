@@ -4,11 +4,23 @@ from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Cog
 
+from utils.DB import Database
+
 
 class Admin(Cog):
     def __init__(self, bot):
         self.bot = bot
         self.guild = discord.Object(id=734455624036909126)
+
+        self.db = Database()
+        self.db.execute(
+            """
+            CREATE TABLE IF NOT EXISTS main_channel(
+                guild_id INT PRIMARY KEY,
+                channel_id INT DEFAULT NULL
+            )
+            """
+        )
 
     @commands.command()
     @commands.is_owner()
@@ -31,6 +43,15 @@ class Admin(Cog):
                     await self.bot.load_extension(cog_name)
                     print(f"Reloaded {filename}")
         await ctx.send("Cogs reloaded.")
+
+    @commands.command()
+    @commands.is_owner()
+    async def setmainchannel(self, ctx):
+        self.db.execute(
+            "INSERT OR REPLACE INTO main_channel (guild_id, channel_id) VALUES (?, ?)",
+            (self.guild.id, ctx.channel.id),
+        )
+        await ctx.send(f"Main channel set to this channel.")
 
     @app_commands.command(name="ping", description="Check the bot's latency")
     @app_commands.guilds(discord.Object(id=734455624036909126))

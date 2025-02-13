@@ -3,9 +3,9 @@ name = "pandora"
 version = "0.1.0"
 description = "Default template for PDM package"
 authors = [
-    {name = "Anthony", email = "drakarta3@gmail.com"},
+    {name = "", email = ""},
 ]
-dependencies = ["discord-py>=2.4.0", "pytz>=2025.1"]
+dependencies = ["discord-py>=2.4.0", "pytz>=2025.1", "toml>=0.10.2", "pandas>=2.2.3"]
 requires-python = ">=3.12"
 readme = "README.md"
 license = {text = "MIT"}

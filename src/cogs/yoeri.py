@@ -26,9 +26,7 @@ class Yoeri(Cog):
             )
             """
         )
-        self.quotes = [
-            row[0] for row in self.db.execute("SELECT quote FROM yoeri_quotes")
-        ]
+        self.quotes = [row[0] for row in self.db.execute("SELECT * FROM yoeri_quotes")]
 
     @Cog.listener("on_message")
     async def yoeri(self, message):

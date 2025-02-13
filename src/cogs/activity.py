@@ -1,4 +1,5 @@
 import asyncio
+import random
 import discord
 from discord.ext import tasks, commands
 from discord.ext.commands import Cog
@@ -20,13 +21,15 @@ class Activity(Cog):
             """
         )
 
+        self.quotes = self.db.execute("SELECT * FROM activity_quotes")
+
         self.change_activity.start()
 
     @tasks.loop(minutes=10)
     async def change_activity(self):
         await self.bot.change_presence(
             status=discord.Status.idle,
-            activity=discord.CustomActivity(name="*yawwwwn* I'm awake now."),
+            activity=discord.CustomActivity(name=random.choice(self.quotes)),
         )
 
     @change_activity.before_loop
