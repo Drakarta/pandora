@@ -11,6 +11,7 @@ from utils.config import Config
 class Bot(BotBase):
     def __init__(self):
         self.config = Config().get_section("main")
+        self.config2 = Config().get_section("api_keys")
 
         super().__init__(
             command_prefix=self.config.prefix,
@@ -29,7 +30,7 @@ class Bot(BotBase):
 
     def run(self, **kwargs):
         print("running bot...")
-        super().run(self.config.discord_token, reconnect=True)
+        super().run(self.config2.discord_token, reconnect=True)
 
     async def on_ready(self):
         print(f"Logged in as {self.user} (ID: {self.user.id})")

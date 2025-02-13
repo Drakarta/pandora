@@ -1,8 +1,10 @@
 [main]
 prefix = "!"
 description = "Description"
-activity = "Custom activity"
 owner_id = 123
+timezone = "Europe/Amsterdam"
+
+[api_keys]
 discord_token = "token"
 
 [voice_chat]
@@ -12,7 +14,7 @@ waiting_room_voice_channel_id = 123
 voice_channel_owner_role_id = 123
 
 [role]
-role_divider_id = 1203859877504491570
+role_divider_id = 123
 
 [clock]
 timezone = "Europe/Amsterdam"

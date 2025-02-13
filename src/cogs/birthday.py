@@ -1,11 +1,13 @@
+import asyncio
 import datetime
 from typing import List
 import discord
 from discord import app_commands
-from discord.ext import commands, tasks
+from discord.ext import tasks
 from discord.ext.commands import Cog
 
 from utils.DB import Database
+from utils.wait import Wait
 
 
 class Birthday(Cog):
@@ -28,11 +30,28 @@ class Birthday(Cog):
     @tasks.loop(hours=24)
     async def check_birthday(self):
         today = datetime.datetime.now().strftime("%m-%d")
+
         birthdays = self.db.execute(
             "SELECT * FROM birthday WHERE birthday = ?", (today,)
         )
         for birthday in birthdays:
-            user = discord.Object(id=birthday[0])
+            user_id, _, guild_id = birthday
+
+            result = self.db.execute(
+                "SELECT channel_id FROM main_channel WHERE guild_id = ?", (guild_id,)
+            )
+            channel_id = result[0][0]
+            channel = self.bot.get_channel(channel_id)
+
+            if channel:
+                await channel.send(f"# 🎉 Happy Birthday <@{user_id}>! 🎂")
+            else:
+                print(f"Failed to find channel with ID {channel_id}")
+
+    @check_birthday.before_loop
+    async def before_clock(self):
+        await self.bot.wait_until_ready()
+        await Wait.wait_until_time(0, 0)
 
     @app_commands.command(name="birthday", description="Set your birthday")
     @app_commands.describe(

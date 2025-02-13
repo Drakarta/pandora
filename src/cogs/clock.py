@@ -12,8 +12,9 @@ class Clock(Cog):
         self.bot = bot
 
         self.config = Config().get_section("clock")
+        self.config2 = Config().get_section("main")
 
-        self.timezone = pytz.timezone(self.config.timezone)
+        self.timezone = pytz.timezone(self.config2.timezone)
         self.channel_id = self.config.channel_id
 
         if not self.channel_id:
