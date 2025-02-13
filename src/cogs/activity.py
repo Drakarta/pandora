@@ -21,15 +21,18 @@ class Activity(Cog):
             """
         )
 
-        self.quotes = self.db.execute("SELECT * FROM activity_quotes")
+        self.activities = [
+            row[0] for row in self.db.execute("SELECT * FROM activity_quotes")
+        ]
 
         self.change_activity.start()
 
     @tasks.loop(minutes=10)
     async def change_activity(self):
+        random_activity = random.choice(self.activities)
         await self.bot.change_presence(
             status=discord.Status.idle,
-            activity=discord.CustomActivity(name=random.choice(self.quotes)),
+            activity=discord.CustomActivity(name=random_activity),
         )
 
     @change_activity.before_loop

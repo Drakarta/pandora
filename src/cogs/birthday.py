@@ -37,6 +37,10 @@ class Birthday(Cog):
         for birthday in birthdays:
             user_id, _, guild_id = birthday
 
+            if discord.Object(id=guild_id).fetch_member(user_id) == discord.NotFound:
+                self.db.execute("DELETE FROM birthday WHERE user_id = ?", (user_id,))
+                continue
+
             result = self.db.execute(
                 "SELECT channel_id FROM main_channel WHERE guild_id = ?", (guild_id,)
             )
@@ -45,8 +49,6 @@ class Birthday(Cog):
 
             if channel:
                 await channel.send(f"# 🎉 Happy Birthday <@{user_id}>! 🎂")
-            else:
-                print(f"Failed to find channel with ID {channel_id}")
 
     @check_birthday.before_loop
     async def before_clock(self):
@@ -69,28 +71,39 @@ class Birthday(Cog):
     ):
         months = {
             "january": 1,
-            "february": 2,
-            "march": 3,
-            "april": 4,
-            "may": 5,
-            "june": 6,
-            "july": 7,
-            "august": 8,
-            "september": 9,
-            "october": 10,
-            "november": 11,
-            "december": 12,
+            "jan": 1,
             "1": 1,
+            "febuary": 2,
+            "feb": 2,
             "2": 2,
+            "march": 3,
+            "mar": 3,
             "3": 3,
+            "april": 4,
+            "apr": 4,
             "4": 4,
+            "may": 5,
             "5": 5,
+            "june": 6,
+            "jun": 6,
             "6": 6,
+            "july": 7,
+            "jul": 7,
             "7": 7,
+            "august": 8,
+            "aug": 8,
             "8": 8,
+            "september": 9,
+            "sep": 9,
             "9": 9,
+            "october": 10,
+            "oct": 10,
             "10": 10,
+            "november": 11,
+            "nov": 11,
             "11": 11,
+            "december": 12,
+            "dec": 12,
             "12": 12,
         }
         month = month.lower()

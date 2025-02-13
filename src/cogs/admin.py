@@ -54,7 +54,9 @@ class Admin(Cog):
         await ctx.send(f"Main channel set to this channel.")
 
     @app_commands.command(name="ping", description="Check the bot's latency")
-    @app_commands.guilds(discord.Object(id=734455624036909126))
+    @app_commands.guilds(
+        discord.Object(id=734455624036909126), discord.Object(id=744191097554862171)
+    )
     async def ping(self, ctx):
         latency = round(self.bot.latency * 1000)
         await ctx.response.send_message(f"pong! ({latency}ms)")
