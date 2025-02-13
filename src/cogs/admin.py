@@ -49,7 +49,7 @@ class Admin(Cog):
     async def setmainchannel(self, ctx):
         self.db.execute(
             "INSERT OR REPLACE INTO main_channel (guild_id, channel_id) VALUES (?, ?)",
-            (self.guild.id, ctx.channel.id),
+            (ctx.guild.id, ctx.channel.id),
         )
         await ctx.send(f"Main channel set to this channel.")
 
