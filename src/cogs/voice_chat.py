@@ -54,7 +54,6 @@ class Voice_Chat(Cog):
             await member.remove_roles(discord.Object(id=self.vc_owner_role_id))
 
             new_owner = channel.members[0]
-            await channel.edit(name=f"{new_owner.display_name}'s channel")
             await new_owner.add_roles(discord.Object(id=self.vc_owner_role_id))
 
     async def create_voice_channel(self, member):
@@ -167,4 +166,4 @@ class Voice_Chat(Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(Voice_Chat(bot))
+    await bot.add_cog(Voice_Chat(bot), guilds=[discord.Object(id=734455624036909126)])

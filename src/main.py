@@ -24,6 +24,8 @@ class Bot(BotBase):
     async def setup_hook(self):
         COGS = [path[:-3] for path in os.listdir("./cogs") if path[-3:] == ".py"]
         for cog in COGS:
+            if cog.startswith("_"):
+                continue
             await self.load_extension(f"cogs.{cog}")
             print(f"loaded: {cog}")
         print("all cogs loaded, setup complete")

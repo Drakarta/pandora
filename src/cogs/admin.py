@@ -3,6 +3,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Cog
+from typing import Literal, Optional
 
 from utils.DB import Database
 
@@ -22,27 +23,55 @@ class Admin(Cog):
         )
 
     @commands.command()
+    @commands.guild_only()
     @commands.is_owner()
-    async def sync(self, ctx):
-        await self.bot.tree.sync(guild=discord.Object(id=734455624036909126))
-        await self.bot.tree.sync(guild=discord.Object(id=744191097554862171))
-        await ctx.send("Command tree synced.")
-        print("Command tree synced.")
+    async def sync(
+        self,
+        ctx: commands.Context,
+        guilds: commands.Greedy[discord.Object] = None,
+        spec: Optional[Literal["~", "*", "^"]] = None,
+    ) -> None:
+        guilds = guilds or []
+
+        if not guilds:
+            if spec == "~":
+                synced = await ctx.bot.tree.sync(guild=ctx.guild)
+            elif spec == "*":
+                ctx.bot.tree.copy_global_to(guild=ctx.guild)
+                synced = await ctx.bot.tree.sync(guild=ctx.guild)
+            elif spec == "^":
+                ctx.bot.tree.clear_commands(guild=ctx.guild)
+                await ctx.bot.tree.sync(guild=ctx.guild)
+                synced = []
+            else:
+                synced = await ctx.bot.tree.sync()
+
+            await ctx.send(
+                f"Synced {len(synced)} commands {'globally' if spec is None else 'to the current guild.'}"
+            )
+            return
+
+        ret = 0
+        for guild in guilds:
+            try:
+                await ctx.bot.tree.sync(guild=guild)
+            except discord.HTTPException:
+                pass
+            else:
+                ret += 1
+
+        await ctx.send(f"Synced the tree to {ret}/{len(guilds)}.")
 
     @commands.command()
     @commands.is_owner()
     async def reload(self, ctx):
-        for filename in os.listdir("./cogs"):
-            if filename.endswith(".py"):
-                cog_name = f"cogs.{filename[:-3]}"
-                try:
-                    await self.bot.unload_extension(cog_name)
-                except commands.ExtensionNotLoaded:
-                    pass
-                finally:
-                    await self.bot.load_extension(cog_name)
-                    print(f"Reloaded {filename}")
-        await ctx.send("Cogs reloaded.")
+        COGS = [path[:-3] for path in os.listdir("./cogs") if path[-3:] == ".py"]
+        for cog in COGS:
+            if cog.startswith("_"):
+                continue
+            await self.load_extension(f"cogs.{cog}")
+            print(f"reloaded: {cog}")
+        print("all cogs reloaded.")
 
     @commands.command()
     @commands.is_owner()
@@ -54,9 +83,6 @@ class Admin(Cog):
         await ctx.send(f"Main channel set to this channel.")
 
     @app_commands.command(name="ping", description="Check the bot's latency")
-    @app_commands.guilds(
-        discord.Object(id=734455624036909126), discord.Object(id=744191097554862171)
-    )
     async def ping(self, ctx):
         latency = round(self.bot.latency * 1000)
         await ctx.response.send_message(f"pong! ({latency}ms)")

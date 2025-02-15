@@ -33,7 +33,6 @@ class Role(Cog):
         name="Set the name of your role.",
         color="Set the color of your role. Hex or RGB format.",
     )
-    @app_commands.guilds(discord.Object(id=734455624036909126))
     async def role(self, ctx, name: str = None, color: str = None):
         if not name and not color:
             await ctx.response.send_message(
@@ -86,4 +85,4 @@ class Role(Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(Role(bot))
+    await bot.add_cog(Role(bot), guilds=[discord.Object(id=734455624036909126)])

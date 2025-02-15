@@ -3,13 +3,13 @@ from typing import List
 import discord
 from discord import app_commands
 from discord.ext import tasks
-from discord.ext.commands import Cog
+from discord.ext.commands import GroupCog
 
 from utils.DB import Database
 from utils.wait import Wait
 
 
-class Birthday(Cog):
+class Birthday(GroupCog, name="birthday", description="Birthday commands"):
     def __init__(self, bot):
         self.bot = bot
 
@@ -54,13 +54,10 @@ class Birthday(Cog):
         await self.bot.wait_until_ready()
         await Wait.wait_until_time(0, 0)
 
-    @app_commands.command(name="birthday", description="Set your birthday")
+    @app_commands.command(name="set", description="Set your birthday")
     @app_commands.describe(
         month="The month of your birthday.",
         day="The day of your birthday.",
-    )
-    @app_commands.guilds(
-        discord.Object(id=734455624036909126), discord.Object(id=744191097554862171)
     )
     async def set_birthday(
         self,
@@ -143,10 +140,7 @@ class Birthday(Cog):
             if current.lower() in month.lower()
         ]
 
-    @app_commands.command(name="removebirthday", description="Remove your birthday")
-    @app_commands.guilds(
-        discord.Object(id=734455624036909126), discord.Object(id=744191097554862171)
-    )
+    @app_commands.command(name="remove", description="Remove your birthday")
     async def remove_birthday(self, ctx):
         self.db.execute("DELETE FROM birthday WHERE user_id = ?", (ctx.user.id,))
         await ctx.response.send_message("Birthday removed.")
