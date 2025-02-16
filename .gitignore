@@ -141,3 +141,4 @@ type_info.json
 src/pdm/VERSION
 
 config.toml
+database.sqlite
