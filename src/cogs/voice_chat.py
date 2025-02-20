@@ -21,7 +21,7 @@ class Voice_Chat(Cog):
         self.db.execute(
             """
             CREATE TABLE IF NOT EXISTS voice_channels (
-                channel_id INTEGER PRIMARY KEY
+                channel_id INT PRIMARY KEY
             )
             """
         )
@@ -77,7 +77,6 @@ class Voice_Chat(Cog):
         promote="Promote a user to voice channel owner.",
         move="Move a user into the channel from the waiting room.",
     )
-    @app_commands.guilds(discord.Object(id=734455624036909126))
     async def channel(
         self,
         ctx,

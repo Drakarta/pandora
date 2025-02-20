@@ -15,9 +15,18 @@ class Admin(Cog):
         self.db = Database()
         self.db.execute(
             """
-            CREATE TABLE IF NOT EXISTS main_channel(
+            CREATE TABLE IF NOT EXISTS channels(
                 guild_id INT PRIMARY KEY,
-                channel_id INT DEFAULT NULL
+                main_channel_id INT DEFAULT NULL
+            )
+            """
+        )
+
+        self.db.execute(
+            """
+            CREATE TABLE IF NOT EXISTS data(
+                key TEXT PRIMARY KEY,
+                value TEXT DEFAULT NULL
             )
             """
         )
@@ -77,10 +86,19 @@ class Admin(Cog):
     @commands.is_owner()
     async def setmainchannel(self, ctx):
         self.db.execute(
-            "INSERT OR REPLACE INTO main_channel (guild_id, channel_id) VALUES (?, ?)",
+            "INSERT OR REPLACE INTO main_channel (guild_id, main_channel_id) VALUES (?, ?)",
             (ctx.guild.id, ctx.channel.id),
         )
         await ctx.send(f"Main channel set to this channel.")
+
+    @commands.command()
+    @commands.is_owner()
+    async def setmusicchannel(self, ctx):
+        self.db.execute(
+            "INSERT OR REPLACE INTO music_channel (guild_id, music_channel_id) VALUES (?, ?)",
+            (ctx.guild.id, ctx.channel.id),
+        )
+        await ctx.send(f"Music channel set to this channel.")
 
     @app_commands.command(name="ping", description="Check the bot's latency")
     async def ping(self, ctx):

@@ -1,4 +1,5 @@
 import asyncio
+import discord
 from discord.ext import tasks
 from discord.ext.commands import Cog
 import datetime
@@ -47,4 +48,4 @@ class Clock(Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(Clock(bot))
+    await bot.add_cog(Clock(bot), guilds=[discord.Object(id=734455624036909126)])

@@ -6,6 +6,8 @@ timezone = "Europe/Amsterdam"
 
 [api_keys]
 discord_token = "token"
+spotify_client = "spotify_client"
+spotify_token = "spotify_token"
 
 [voice_chat]
 category_id = 123
@@ -17,6 +19,10 @@ voice_channel_owner_role_id = 123
 role_divider_id = 123
 
 [clock]
+channel_id = 123
+
+[song]
+playlist_id = "playlist_id"
 channel_id = 123
 
 [yoeri]
