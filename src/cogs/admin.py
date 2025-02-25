@@ -82,6 +82,28 @@ class Admin(Cog):
             print(f"reloaded: {cog}")
         print("all cogs reloaded.")
 
+    # @commands.command()
+    # @commands.is_owner()
+    # async def servers(self, ctx):
+    #     server_list = []
+    #     async for server in self.bot.fetch_guilds(limit=None):
+    #         server_list.append(f"{server.id} - {server.name}")
+
+    #     server = "\n".join(server_list)
+    #     await ctx.send(f"```{server}```")
+
+    # @commands.command()
+    # @commands.is_owner()
+    # async def leaveserver(self, ctx, guild_id: int):
+    #     guild = self.bot.get_guild(guild_id)
+
+    #     if guild is None:
+    #         await ctx.send(f"I am not in a server with ID: {guild_id}.")
+    #         return
+
+    #     await guild.leave()
+    #     await ctx.send(f"Left the server: {guild.name} (ID: {guild.id}).")
+
     @commands.command()
     @commands.is_owner()
     async def setmainchannel(self, ctx):
