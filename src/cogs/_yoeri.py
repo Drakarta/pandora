@@ -48,9 +48,6 @@ class Yoeri(Cog):
         name="yoeri", description="Add a quote to the Yoeri impersonation."
     )
     @app_commands.describe(quote="The quote to add.")
-    @app_commands.guilds(
-        discord.Object(id=734455624036909126), discord.Object(id=744191097554862171)
-    )
     async def add_quote(self, ctx, quote: str):
         try:
             self.db.execute("INSERT INTO yoeri_quotes (quote) VALUES (?)", (quote,))
@@ -69,4 +66,4 @@ class Yoeri(Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(Yoeri(bot))
+    await bot.add_cog(Yoeri(bot), guilds=[discord.Object(id=734455624036909126)])

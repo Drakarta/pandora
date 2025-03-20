@@ -114,7 +114,9 @@ class Birthday(GroupCog, name="birthday", description="Birthday commands"):
             "INSERT OR REPLACE INTO birthday (user_id, birthday, server_id) VALUES (?, ?, ?)",
             (ctx.user.id, birthday, ctx.guild.id),
         )
-        await ctx.response.send_message("Birthday set.", ephemeral=True)
+        await ctx.response.send_message(
+            f"Your birthday has been set to {birthday}.", ephemeral=True
+        )
 
     @set_birthday.autocomplete("month")
     async def month_autocomplete(

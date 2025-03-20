@@ -40,7 +40,7 @@ class Song(Cog):
         )
         song = playlist["items"][0]["track"]
 
-        channel = self.bot.get_channel(self.config.channel_id)
+        channel = self.bot.get_channel(self.config.song_channel_id)
         message = await channel.send(
             f"# [{song['name']} - {song['artists'][0]['name']}]({song['external_urls']['spotify']})"
         )
